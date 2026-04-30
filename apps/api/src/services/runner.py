@@ -1,6 +1,6 @@
 import asyncio
 import json
-from typing import AsyncIterator
+from collections.abc import AsyncIterator
 
 import structlog
 
@@ -56,9 +56,7 @@ async def stream_agent(*, prompt: str, request_id: str) -> AsyncIterator[dict]:
     await asyncio.sleep(0.2)
     yield {
         "event": "tool_result",
-        "data": json.dumps(
-            ToolResultEvent(name="placeholder", result="ok").model_dump()
-        ),
+        "data": json.dumps(ToolResultEvent(name="placeholder", result="ok").model_dump()),
     }
     await asyncio.sleep(0.2)
     yield {

@@ -1,6 +1,6 @@
 import shlex
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
 
 from src.config import Settings
 

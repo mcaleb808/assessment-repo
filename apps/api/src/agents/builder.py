@@ -1,5 +1,5 @@
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator
 
 from src.agents.prompts import SYSTEM_PROMPT
 from src.config import get_settings
