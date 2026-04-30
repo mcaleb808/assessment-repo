@@ -36,25 +36,30 @@ export async function streamChat(
   const decoder = new TextDecoder();
   let buffer = "";
 
+  const drain = () => {
+    while (true) {
+      const match = buffer.match(/\r?\n\r?\n/);
+      if (!match || match.index === undefined) return;
+      const block = buffer.slice(0, match.index);
+      buffer = buffer.slice(match.index + match[0].length);
+      const event = parseSseBlock(block);
+      if (event) callbacks.onEvent(event);
+    }
+  };
+
   while (true) {
     const { value, done } = await reader.read();
     if (done) break;
     buffer += decoder.decode(value, { stream: true });
-
-    let separator = buffer.indexOf("\n\n");
-    while (separator !== -1) {
-      const block = buffer.slice(0, separator);
-      buffer = buffer.slice(separator + 2);
-      const event = parseSseBlock(block);
-      if (event) callbacks.onEvent(event);
-      separator = buffer.indexOf("\n\n");
-    }
+    drain();
   }
+  buffer += decoder.decode();
+  drain();
 }
 
 function parseSseBlock(block: string): StreamEvent | null {
   let data = "";
-  for (const line of block.split("\n")) {
+  for (const line of block.split(/\r?\n/)) {
     if (line.startsWith("data:")) data += line.slice(5).trimStart();
   }
   if (!data) return null;

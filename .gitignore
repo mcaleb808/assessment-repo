@@ -53,6 +53,7 @@ tools.json
 trace.json
 .langfuse/
 .claude/
+docs/video*.md
 
 # Docker
 .docker/
