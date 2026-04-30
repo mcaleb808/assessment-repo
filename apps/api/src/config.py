@@ -4,6 +4,14 @@ from typing import Literal
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Placeholder value Terraform writes when bootstrapping a Secret Manager entry.
+# Treated as "unset" so /health does not falsely report a service as ready.
+PLACEHOLDER = "REPLACE_ME"
+
+
+def _is_set(value: str) -> bool:
+    return bool(value) and value != PLACEHOLDER
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
@@ -32,13 +40,13 @@ class Settings(BaseSettings):
 
     @property
     def langfuse_enabled(self) -> bool:
-        return bool(self.langfuse_public_key and self.langfuse_secret_key)
+        return _is_set(self.langfuse_public_key) and _is_set(self.langfuse_secret_key)
 
     @property
     def mcp_configured(self) -> bool:
         if self.mcp_transport == "sse":
-            return bool(self.mcp_server_url)
-        return bool(self.mcp_stdio_command)
+            return _is_set(self.mcp_server_url)
+        return _is_set(self.mcp_stdio_command)
 
 
 @lru_cache(maxsize=1)

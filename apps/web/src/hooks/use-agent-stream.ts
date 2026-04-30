@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { streamUrl } from "@/lib/api";
 import type { AgentRunState, StreamEvent } from "@/lib/types";
@@ -21,6 +21,13 @@ export function useAgentStream() {
   const stop = useCallback(() => {
     sourceRef.current?.close();
     sourceRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      sourceRef.current?.close();
+      sourceRef.current = null;
+    };
   }, []);
 
   const reset = useCallback(() => {

@@ -117,12 +117,14 @@ jobs:
           cache-from: type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
 
-  deploy-api:
-    name: Deploy api
+  deploy:
+    name: Deploy ${{ matrix.service }}
     needs: build-push
     runs-on: ubuntu-latest
-    outputs:
-      url: ${{ steps.deploy.outputs.url }}
+    strategy:
+      matrix:
+        service: [api, web]
+      fail-fast: false
     steps:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
@@ -130,39 +132,14 @@ jobs:
           workload_identity_provider: ${{ env.WIF_PROVIDER }}
           service_account: ${{ env.DEPLOYER_SA }}
 
-      - name: Deploy api to Cloud Run
+      - name: Deploy ${{ matrix.service }} to Cloud Run
         id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          service: assessment-api
+          service: assessment-${{ matrix.service }}
           region: ${{ env.GCP_REGION }}
-          image: ${{ env.REGISTRY }}/api:${{ github.sha }}
+          image: ${{ env.REGISTRY }}/${{ matrix.service }}:${{ github.sha }}
           flags: --quiet
 
-      - name: Print api URL
-        run: echo "api=${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
-
-  deploy-web:
-    name: Deploy web
-    needs: [build-push, deploy-api]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Authenticate to GCP
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ env.WIF_PROVIDER }}
-          service_account: ${{ env.DEPLOYER_SA }}
-
-      - name: Deploy web to Cloud Run
-        id: deploy
-        uses: google-github-actions/deploy-cloudrun@v2
-        with:
-          service: assessment-web
-          region: ${{ env.GCP_REGION }}
-          image: ${{ env.REGISTRY }}/web:${{ github.sha }}
-          env_vars: |
-            NEXT_PUBLIC_API_URL=${{ needs.deploy-api.outputs.url }}
-          flags: --quiet
-
-      - name: Print web URL
-        run: echo "web=${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+      - name: Print URL
+        run: echo "${{ matrix.service }}=${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

@@ -17,7 +17,7 @@ export default function Page() {
         <div>
           <h1 className="text-xl font-semibold tracking-tight">MCP Agent</h1>
           <p className="text-sm text-muted-foreground">
-            Send a prompt — the agent calls MCP tools and streams the result back.
+            Send a prompt - the agent calls MCP tools and streams the result back.
           </p>
         </div>
         <HealthIndicator />

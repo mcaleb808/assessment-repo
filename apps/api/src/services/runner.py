@@ -46,7 +46,7 @@ async def stream_agent(*, prompt: str, request_id: str) -> AsyncIterator[dict]:
 
     _log.info("agent.stream.start", request_id=request_id, prompt_chars=len(prompt))
 
-    # Placeholder stream — replace with Runner.run_streamed() once the agent is wired.
+    # Placeholder stream - replace with Runner.run_streamed() once the agent is wired.
     yield {
         "event": "tool_call",
         "data": json.dumps(

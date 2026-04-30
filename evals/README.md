@@ -7,17 +7,17 @@ run against a deployed URL, and read the green/amber/red table.
 
 Each case in `cases.json` has:
 
-- `id`               — short identifier (`EX-001`)
-- `prompt`           — the user input
-- `expected_tools`   — list of tool names the agent **must** call (or `[]` to skip)
-- `expected_keywords` — substrings (case-insensitive) the result **must** contain
-- `notes`            — free-form context
+- `id`               - short identifier (`EX-001`)
+- `prompt`           - the user input
+- `expected_tools`   - list of tool names the agent **must** call (or `[]` to skip)
+- `expected_keywords` - substrings (case-insensitive) the result **must** contain
+- `notes`            - free-form context
 
 Tier rules:
 
-- **green** — 200, all expected tools called, all keywords present, latency < 30s
-- **amber** — 200 but missed at least one expectation
-- **red**   — non-200 or transport error
+- **green** - 200, all expected tools called, all keywords present, latency < 30s
+- **amber** - 200 but missed at least one expectation
+- **red**   - non-200 or transport error
 
 ## Run
 
