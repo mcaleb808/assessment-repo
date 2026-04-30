@@ -23,13 +23,12 @@ class Settings(BaseSettings):
 
     openai_api_key: str = ""
 
-    mcp_transport: Literal["stdio", "sse"] = "sse"
+    mcp_transport: Literal["stdio", "sse", "streamable_http"] = "streamable_http"
     mcp_server_url: str = ""
     mcp_stdio_command: str = ""
     mcp_stdio_args: str = ""
 
-    strong_model: str = "gpt-4o"
-    fast_model: str = "gpt-4o-mini"
+    model: str = "gpt-4o-mini"
 
     langfuse_public_key: str = ""
     langfuse_secret_key: str = ""
@@ -44,7 +43,7 @@ class Settings(BaseSettings):
 
     @property
     def mcp_configured(self) -> bool:
-        if self.mcp_transport == "sse":
+        if self.mcp_transport in ("sse", "streamable_http"):
             return _is_set(self.mcp_server_url)
         return _is_set(self.mcp_stdio_command)
 

@@ -8,8 +8,8 @@ class ToolCall(BaseModel):
     error: str | None = None
 
 
-class RunResponse(BaseModel):
-    result: str
+class ChatResponse(BaseModel):
+    reply: str
     tool_calls: list[ToolCall] = Field(default_factory=list)
     request_id: str | None = None
     trace_id: str | None = None

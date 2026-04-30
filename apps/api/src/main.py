@@ -14,6 +14,10 @@ from src.services.tracing import init_tracing, shutdown_tracing
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     configure_logging(level=settings.log_level)
+    if settings.openai_api_key:
+        from agents import set_default_openai_key
+
+        set_default_openai_key(settings.openai_api_key)
     init_tracing(settings)
     try:
         yield

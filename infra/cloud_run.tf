@@ -38,14 +38,10 @@ resource "google_cloud_run_v2_service" "api" {
 
       env {
         name  = "MCP_TRANSPORT"
-        value = "sse"
+        value = "streamable_http"
       }
       env {
-        name  = "STRONG_MODEL"
-        value = "gpt-4o"
-      }
-      env {
-        name  = "FAST_MODEL"
+        name  = "MODEL"
         value = "gpt-4o-mini"
       }
       env {

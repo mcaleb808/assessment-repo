@@ -7,15 +7,18 @@ from src.config import Settings
 
 @asynccontextmanager
 async def connect_mcp(settings: Settings) -> AsyncIterator[object]:
-    """Connect to an MCP server using either stdio or SSE transport.
+    transport = settings.mcp_transport
 
-    Transport switches on `settings.mcp_transport`:
-      - "sse": expects `mcp_server_url` set to a streamable-HTTP / SSE endpoint
-      - "stdio": expects `mcp_stdio_command` (and optional `mcp_stdio_args`)
+    if transport == "streamable_http":
+        if not settings.mcp_server_url:
+            raise RuntimeError("MCP_SERVER_URL is required when MCP_TRANSPORT=streamable_http")
+        from agents.mcp import MCPServerStreamableHttp
 
-    Yields the `agents.mcp.MCPServerStdio` or `MCPServerSse` instance, opened.
-    """
-    if settings.mcp_transport == "sse":
+        async with MCPServerStreamableHttp(params={"url": settings.mcp_server_url}) as server:
+            yield server
+        return
+
+    if transport == "sse":
         if not settings.mcp_server_url:
             raise RuntimeError("MCP_SERVER_URL is required when MCP_TRANSPORT=sse")
         from agents.mcp import MCPServerSse

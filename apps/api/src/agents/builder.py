@@ -19,7 +19,7 @@ async def build_agent() -> AsyncIterator[object]:
         agent = Agent(
             name="mcp-agent",
             instructions=SYSTEM_PROMPT,
-            model=settings.strong_model,
+            model=settings.model,
             mcp_servers=[mcp_server],
         )
         yield agent

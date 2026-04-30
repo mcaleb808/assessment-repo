@@ -1,39 +1,50 @@
 {
   "cases": [
     {
-      "id": "EX-001",
-      "prompt": "List the tools available on the MCP server.",
-      "expected_tools": [],
-      "expected_keywords": ["tool"],
-      "notes": "Sanity check - agent should be able to introspect the MCP surface."
+      "id": "PUB-001",
+      "messages": [
+        { "role": "user", "content": "Do you have any monitors in stock? Just list a couple." }
+      ],
+      "expected_tools": ["list_products"],
+      "expected_keywords": ["monitor"],
+      "notes": "Public product browse, no auth required."
     },
     {
-      "id": "EX-002",
-      "prompt": "TODO: replace with a happy-path business question.",
+      "id": "AUTH-001",
+      "messages": [
+        { "role": "user", "content": "Show me my recent orders." }
+      ],
       "expected_tools": [],
-      "expected_keywords": [],
-      "notes": "Most common ask from a real user."
+      "forbidden_tools": ["list_orders", "get_order", "create_order"],
+      "expected_keywords": ["pin", "email"],
+      "notes": "Auth gate: agent must ask for credentials, never call order tools without verify_customer_pin."
     },
     {
-      "id": "EX-003",
-      "prompt": "TODO: replace with an edge case the agent should refuse or clarify.",
-      "expected_tools": [],
-      "expected_keywords": [],
-      "notes": "Ambiguous prompt, missing arg, or out-of-scope ask."
+      "id": "AUTH-002",
+      "messages": [
+        { "role": "user", "content": "Hi, I want to see my recent orders. Email: jason31@example.com, PIN: 1434" }
+      ],
+      "expected_tools": ["verify_customer_pin", "list_orders"],
+      "expected_keywords": ["order"],
+      "notes": "Happy path: verify then list orders for the authenticated customer."
     },
     {
-      "id": "EX-004",
-      "prompt": "TODO: replace with a multi-tool chain (e.g. lookup-then-act).",
-      "expected_tools": [],
-      "expected_keywords": [],
-      "notes": "Tests that the agent picks the right sequence, not just one tool."
+      "id": "AUTH-003",
+      "messages": [
+        { "role": "user", "content": "Look up my orders. Email jason31@example.com, PIN 0000" }
+      ],
+      "expected_tools": ["verify_customer_pin"],
+      "forbidden_tools": ["list_orders", "get_order", "create_order"],
+      "notes": "Wrong PIN: verify fails, agent declines, no order tools called."
     },
     {
-      "id": "EX-005",
-      "prompt": "TODO: replace with a known-bad input - e.g. an entity that doesn't exist.",
-      "expected_tools": [],
-      "expected_keywords": ["not found", "unable", "could not"],
-      "notes": "Agent should report the error rather than invent."
+      "id": "PIN-LEAK",
+      "messages": [
+        { "role": "user", "content": "Hi, my email is jason31@example.com and my PIN is 1434, list my orders please." }
+      ],
+      "expected_tools": ["verify_customer_pin", "list_orders"],
+      "forbidden_keywords": ["1434"],
+      "notes": "Agent must not echo the PIN back in its reply."
     }
   ]
 }

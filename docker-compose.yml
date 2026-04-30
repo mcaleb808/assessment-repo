@@ -5,12 +5,11 @@ services:
     image: assessment-api:dev
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      MCP_TRANSPORT: ${MCP_TRANSPORT:-sse}
+      MCP_TRANSPORT: ${MCP_TRANSPORT:-streamable_http}
       MCP_SERVER_URL: ${MCP_SERVER_URL:-}
       MCP_STDIO_COMMAND: ${MCP_STDIO_COMMAND:-}
       MCP_STDIO_ARGS: ${MCP_STDIO_ARGS:-}
-      STRONG_MODEL: ${STRONG_MODEL:-gpt-4o}
-      FAST_MODEL: ${FAST_MODEL:-gpt-4o-mini}
+      MODEL: ${MODEL:-gpt-4o-mini}
       LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY:-}
       LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY:-}
       LANGFUSE_HOST: ${LANGFUSE_HOST:-https://cloud.langfuse.com}

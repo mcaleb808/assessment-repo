@@ -1,37 +1,42 @@
-# MCP Agent
+# Meridian Support Chatbot
 
-An MCP-driven agent. FastAPI backend + Next.js frontend, both on Google
-Cloud Run.
+A customer support chatbot for Meridian Electronics. FastAPI backend running
+the OpenAI Agents SDK against an MCP server, Next.js chat frontend, both on
+Google Cloud Run.
 
 ## How it works
 
 ```mermaid
 flowchart LR
-  Browser["Next.js (web)"]
-  API["FastAPI (routes · agent · SSE)"]
-  Agent["OpenAI Agents SDK"]
-  MCP["MCP server (stdio | SSE)"]
+  Customer(["Customer"])
+  UI["Chat UI · Next.js"]
+  API["FastAPI · Agents SDK"]
+  LLM["GPT-4o-mini"]
+  MCP["Meridian MCP Server"]
 
-  Browser -- "REST + SSE" --> API
-  API -- "Runner.run / run_streamed" --> Agent
-  Agent -- "list_tools · call_tool" --> MCP
+  Customer --> UI
+  UI -- "POST · SSE" --> API
+  API <--> LLM
+  API -- "Streamable HTTP" --> MCP
 ```
 
 ## Quick start
 
 ```bash
-cp .env.example .env  # OPENAI_API_KEY, MCP_SERVER_URL, LANGFUSE_*
-make dev              # api on :8000, web on :3000
-make test             # pytest + tsc
+cp .env.example apps/api/.env  # OPENAI_API_KEY required, MCP_SERVER_URL preset
+make dev                        # api on :8000, web on :3000 via docker compose
+make test                       # pytest + tsc + eslint
 ```
 
 ## Endpoints
 
 ```
 GET  /health
-POST /agent/run             # synchronous
-GET  /agent/stream?prompt=  # SSE
+POST /agent/chat                # full reply, JSON
+POST /agent/stream              # SSE: tool_call, tool_result, final
 ```
+
+Body shape: `{"messages": [{"role": "user|assistant", "content": "..."}]}`.
 
 ## Deploy
 
