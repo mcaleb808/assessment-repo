@@ -1,0 +1,39 @@
+{
+  "cases": [
+    {
+      "id": "EX-001",
+      "prompt": "List the tools available on the MCP server.",
+      "expected_tools": [],
+      "expected_keywords": ["tool"],
+      "notes": "Sanity check — agent should be able to introspect the MCP surface."
+    },
+    {
+      "id": "EX-002",
+      "prompt": "TODO: replace with a happy-path business question.",
+      "expected_tools": [],
+      "expected_keywords": [],
+      "notes": "Most common ask from a real user."
+    },
+    {
+      "id": "EX-003",
+      "prompt": "TODO: replace with an edge case the agent should refuse or clarify.",
+      "expected_tools": [],
+      "expected_keywords": [],
+      "notes": "Ambiguous prompt, missing arg, or out-of-scope ask."
+    },
+    {
+      "id": "EX-004",
+      "prompt": "TODO: replace with a multi-tool chain (e.g. lookup-then-act).",
+      "expected_tools": [],
+      "expected_keywords": [],
+      "notes": "Tests that the agent picks the right sequence, not just one tool."
+    },
+    {
+      "id": "EX-005",
+      "prompt": "TODO: replace with a known-bad input — e.g. an entity that doesn't exist.",
+      "expected_tools": [],
+      "expected_keywords": ["not found", "unable", "could not"],
+      "notes": "Agent should report the error rather than invent."
+    }
+  ]
+}

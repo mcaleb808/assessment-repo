@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+.next/
+out/
+.pnpm-store/
+*.tsbuildinfo
+.turbo/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+service-account*.json
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.*
+terraform.tfvars
+!terraform.tfvars.example
+*.tfplan
+tf.plan
+crash.log
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local artefacts
+tools.json
+trace.json
+.langfuse/
+
+# Docker
+.docker/

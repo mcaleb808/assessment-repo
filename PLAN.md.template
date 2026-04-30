@@ -1,0 +1,40 @@
+# PLAN
+
+> Copy this file to `PLAN.md` and fill in.
+
+## Problem
+
+What business problem is this solving? Who is the user? What does success
+look like in one sentence?
+
+## MCP server
+
+- Transport: `stdio` | `sse`
+- Endpoint: `<URL or command>`
+- Tools (from `make list-tools`):
+  - `<tool_name>`: `<short description>`
+  - …
+
+## Approach
+
+1. …
+2. …
+3. …
+
+## Alternatives considered
+
+- **<Alternative A>** — rejected because …
+- **<Alternative B>** — rejected because …
+
+## Risk
+
+- Risk: …
+- Mitigation: …
+
+## Verification
+
+- [ ] `make test` green
+- [ ] `make smoke URL=<deployed>` returns expected fields
+- [ ] `make eval URL=<deployed>` shows green for the happy path
+- [ ] Frontend renders the live event stream and the final result
+- [ ] LangFuse trace visible for at least one full run
