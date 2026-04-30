@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MCP Agent",
-  description: "An MCP-driven agent over a hosted backend.",
+  title: "Meridian Support",
+  description: "Customer support chatbot for Meridian Electronics.",
 };
 
 export default function RootLayout({

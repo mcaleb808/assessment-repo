@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gcloud secrets *)",
+      "Bash(pkill -f \"uvicorn src.main:app\")",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(pkill -f \"node.*next\")"
+    ]
+  }
+}

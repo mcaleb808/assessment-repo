@@ -34,21 +34,17 @@ export function useChat() {
   const send = useCallback(
     async (content: string) => {
       const trimmed = content.trim();
-      if (!trimmed) return;
+      if (!trimmed || state.isStreaming) return;
 
-      let history: Message[] = [];
-      setState((prev) => {
-        if (prev.isStreaming) return prev;
-        const userMessage: Message = { role: "user", content: trimmed };
-        history = [...prev.messages, userMessage];
-        return {
-          messages: history,
-          pendingToolCalls: [],
-          isStreaming: true,
-          error: null,
-        };
+      const userMessage: Message = { role: "user", content: trimmed };
+      const history = [...state.messages, userMessage];
+
+      setState({
+        messages: history,
+        pendingToolCalls: [],
+        isStreaming: true,
+        error: null,
       });
-      if (history.length === 0) return;
 
       const calls: ToolCall[] = [];
       const controller = new AbortController();
@@ -100,7 +96,7 @@ export function useChat() {
         if (abortRef.current === controller) abortRef.current = null;
       }
     },
-    [],
+    [state.messages, state.isStreaming],
   );
 
   const reset = useCallback(() => {
