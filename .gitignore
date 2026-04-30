@@ -52,6 +52,7 @@ crash.log
 tools.json
 trace.json
 .langfuse/
+.claude/
 
 # Docker
 .docker/
